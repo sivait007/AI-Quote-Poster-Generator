@@ -22,9 +22,11 @@ export interface FontFamily {
   name: string;
   className: string;
   value: string;
+  lang: string;
 }
 
 export interface Quote {
   quote: string;
   category: string;
+  lang: string;
 }

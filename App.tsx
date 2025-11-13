@@ -27,13 +27,14 @@ const App: React.FC = () => {
     });
 
     useEffect(() => {
-        // Load initial quote
-        setQuote(FALLBACK_QUOTES[Math.floor(Math.random() * FALLBACK_QUOTES.length)].quote);
+        // Load initial quote in English
+        const englishQuotes = FALLBACK_QUOTES.filter(q => q.lang === 'en');
+        setQuote(englishQuotes[Math.floor(Math.random() * englishQuotes.length)].quote);
     }, []);
 
-    const handleGenerateQuote = async (topic: string) => {
+    const handleGenerateQuote = async (topic: string, lang: string) => {
         setIsAiLoading(true);
-        const newQuote = await generateQuote(topic);
+        const newQuote = await generateQuote(topic, lang);
         setQuote(newQuote);
         setIsAiLoading(false);
     };

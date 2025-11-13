@@ -12,20 +12,26 @@ export const GRADIENTS: Gradient[] = [
 ];
 
 export const FONT_FAMILIES: FontFamily[] = [
-  { name: 'Playfair', className: 'font-serif', value: "'Playfair Display', serif" },
-  { name: 'Inter', className: 'font-sans', value: "'Inter', sans-serif" },
-  { name: 'Roboto Mono', className: "font-mono", value: "'Roboto Mono', monospace" },
-  { name: 'Lobster', className: "font-['Lobster']", value: "'Lobster', cursive" },
+  { name: 'Playfair', className: 'font-serif', value: "'Playfair Display', serif", lang: 'en' },
+  { name: 'Inter', className: 'font-sans', value: "'Inter', sans-serif", lang: 'all' },
+  { name: 'Roboto Mono', className: "font-mono", value: "'Roboto Mono', monospace", lang: 'all' },
+  { name: 'Lobster', className: "font-['Lobster']", value: "'Lobster', cursive", lang: 'en' },
+  { name: 'Tamil', className: "font-tamil", value: "'Noto Sans Tamil', sans-serif", lang: 'ta' },
+  { name: 'Hindi', className: "font-hindi", value: "'Noto Sans Devanagari', sans-serif", lang: 'hi' },
 ];
 
 export const FALLBACK_QUOTES: Quote[] = [
-    { "quote": "The only way to do great work is to love what you do.", "category": "Motivational" },
-    { "quote": "Your limitation—it's only your imagination.", "category": "Motivational" },
-    { "quote": "The best time to plant a tree was 20 years ago. The second best time is now.", "category": "Motivational" },
-    { "quote": "Love is not just looking at each other, it's looking in the same direction.", "category": "Love" },
-    { "quote": "To love and be loved is to feel the sun from both sides.", "category": "Love" },
-    { "quote": "Success is not final, failure is not fatal: it is the courage to continue that counts.", "category": "Success" },
-    { "quote": "The road to success and the road to failure are almost exactly the same.", "category": "Success" },
-    { "quote": "The purpose of our lives is to be happy.", "category": "Happiness" },
-    { "quote": "Happiness is not something readymade. It comes from your own actions.", "category": "Happiness" }
+    { "quote": "The only way to do great work is to love what you do.", "category": "Motivational", "lang": "en" },
+    { "quote": "Your limitation—it's only your imagination.", "category": "Motivational", "lang": "en" },
+    { "quote": "The best time to plant a tree was 20 years ago. The second best time is now.", "category": "Motivational", "lang": "en" },
+    { "quote": "Love is not just looking at each other, it's looking in the same direction.", "category": "Love", "lang": "en" },
+    { "quote": "To love and be loved is to feel the sun from both sides.", "category": "Love", "lang": "en" },
+    { "quote": "Success is not final, failure is not fatal: it is the courage to continue that counts.", "category": "Success", "lang": "en" },
+    { "quote": "The road to success and the road to failure are almost exactly the same.", "category": "Success", "lang": "en" },
+    { "quote": "The purpose of our lives is to be happy.", "category": "Happiness", "lang": "en" },
+    { "quote": "Happiness is not something readymade. It comes from your own actions.", "category": "Happiness", "lang": "en" },
+    { "quote": "யாதும் ஊரே யாவரும் கேளிர்", "category": "Motivational", "lang": "ta"},
+    { "quote": "விடாமுயற்சி விஸ்வரூப வெற்றி", "category": "Success", "lang": "ta"},
+    { "quote": "सत्यमेव जयते", "category": "Motivational", "lang": "hi"},
+    { "quote": "असंभव कुछ भी नहीं", "category": "Success", "lang": "hi"}
 ];
