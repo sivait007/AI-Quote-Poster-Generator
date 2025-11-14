@@ -47,20 +47,6 @@
   }
 }
 </script>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript">
-  // This function will be called by Google's loader when the API is ready.
-  function onGoogleApiLoad() {
-    // Dispatch a custom event that our React component can listen for.
-    window.dispatchEvent(new CustomEvent('google-transliteration-loaded'));
-  }
-
-  // Load the Transliteration API and set our function as the callback.
-  google.load("elements", "1", {
-    packages: "transliteration",
-    callback: onGoogleApiLoad
-  });
-</script>
 </head>
   <body>
     <div id="root"></div>
