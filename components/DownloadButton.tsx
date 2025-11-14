@@ -1,11 +1,5 @@
 import React from 'react';
-
-// Extend the Window interface to include the html2canvas property
-declare global {
-  interface Window {
-    html2canvas: any; // Use 'any' to accommodate module differences (e.g., with a .default property)
-  }
-}
+import html2canvas from 'html2canvas';
 
 interface DownloadButtonProps {
     elementRef: React.RefObject<HTMLDivElement>;
@@ -28,22 +22,16 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ elementRef, isAiLoading
             return;
         }
 
-        // Find the correct html2canvas function, accommodating module differences.
-        const html2canvasFn = window.html2canvas?.default || window.html2canvas;
-
-        if (typeof html2canvasFn !== 'function') {
-            console.error("html2canvas library is not loaded or not a function.", window.html2canvas);
+        if (typeof html2canvas !== 'function') {
+            console.error("html2canvas library failed to load as a function.");
             alert("The download library failed to load. Please check your internet connection and refresh the page.");
             return;
         }
 
-
-        // --- PREPARE FOR CAPTURE ---
         const watermark = document.createElement('div');
         const style = document.createElement('style');
 
         try {
-            // 1. Add watermark to the DOM
             watermark.id = 'temp-watermark';
             watermark.innerText = 'Posterly';
             Object.assign(watermark.style, {
@@ -60,23 +48,19 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ elementRef, isAiLoading
             });
             element.appendChild(watermark);
 
-            // 2. Add temporary stylesheet to hide editor controls
             style.id = 'temp-hide-style';
             style.innerHTML = '.html2canvas-ignore { display: none !important; }';
             document.head.appendChild(style);
 
-            // 3. Wait for a short moment to allow the browser to repaint
             await new Promise(resolve => setTimeout(resolve, 150));
 
-            // --- CAPTURE CANVAS ---
-            const canvas = await html2canvasFn(element, {
-                scale: 3, // for high-resolution
+            const canvas = await html2canvas(element, {
+                scale: 3,
                 useCORS: true,
                 backgroundColor: null,
-                logging: true, // Enable logging for easier debugging
+                logging: true,
             });
 
-            // --- TRIGGER DOWNLOAD ---
             const link = document.createElement('a');
             link.download = 'posterly-quote.png';
             link.href = canvas.toDataURL('image/png');
@@ -86,8 +70,6 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ elementRef, isAiLoading
             console.error("Error generating poster with html2canvas:", error);
             alert("Sorry, something went wrong while creating your poster image. This can sometimes happen with complex backgrounds or fonts. Please try again.");
         } finally {
-            // --- CLEANUP ---
-            // This block will run regardless of whether an error occurred, ensuring a clean state.
             if (watermark.parentNode === element) {
                 element.removeChild(watermark);
             }
