@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import type { StyleSettings, Gradient, FontFamily } from '../types';
 import SparklesIcon from './icons/SparklesIcon';
-import AdBanner from './AdBanner';
 
 interface ToolbarProps {
   styles: StyleSettings;
@@ -17,6 +16,16 @@ interface ToolbarProps {
 
 type Tab = 'style' | 'text' | 'ai';
 type CustomBgMode = 'solid' | 'gradient';
+
+const AlignLeftIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}><path d="M3 4H21V6H3V4ZM3 9H15V11H3V9ZM3 14H21V16H3V14ZM3 19H15V21H3V19Z" /></svg>
+);
+const AlignCenterIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}><path d="M3 4H21V6H3V4ZM7 9H17V11H7V9ZM3 14H21V16H3V14ZM7 19H17V21H7V19Z" /></svg>
+);
+const AlignRightIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}><path d="M3 4H21V6H3V4ZM9 9H21V11H9V9ZM3 14H21V16H3V14ZM9 19H21V21H9V19Z" /></svg>
+);
 
 const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFamilies, onGenerateQuote, onGenerateBackground, isAiLoading, onInsertEmoji, onFontSizeAdjust }) => {
   const [activeTab, setActiveTab] = useState<Tab>('text');
@@ -211,9 +220,9 @@ const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFam
             <div>
               <h3 className="font-bold mb-2">Alignment & Color</h3>
               <div className="flex items-center space-x-2">
-                <button onClick={() => updateStyle('textAlign', 'left')} className={`p-2 rounded-lg ${styles.textAlign === 'left' ? 'bg-posterly-indigo text-white' : 'bg-gray-200'}`}>L</button>
-                <button onClick={() => updateStyle('textAlign', 'center')} className={`p-2 rounded-lg ${styles.textAlign === 'center' ? 'bg-posterly-indigo text-white' : 'bg-gray-200'}`}>C</button>
-                <button onClick={() => updateStyle('textAlign', 'right')} className={`p-2 rounded-lg ${styles.textAlign === 'right' ? 'bg-posterly-indigo text-white' : 'bg-gray-200'}`}>R</button>
+                <button title="Align Left" onClick={() => updateStyle('textAlign', 'left')} className={`p-2 rounded-lg ${styles.textAlign === 'left' ? 'bg-posterly-indigo text-white' : 'bg-gray-200 hover:bg-gray-300'}`}><AlignLeftIcon className="w-5 h-5" /></button>
+                <button title="Align Center" onClick={() => updateStyle('textAlign', 'center')} className={`p-2 rounded-lg ${styles.textAlign === 'center' ? 'bg-posterly-indigo text-white' : 'bg-gray-200 hover:bg-gray-300'}`}><AlignCenterIcon className="w-5 h-5" /></button>
+                <button title="Align Right" onClick={() => updateStyle('textAlign', 'right')} className={`p-2 rounded-lg ${styles.textAlign === 'right' ? 'bg-posterly-indigo text-white' : 'bg-gray-200 hover:bg-gray-300'}`}><AlignRightIcon className="w-5 h-5" /></button>
                 <div className="flex-grow" />
                 <button onClick={() => updateStyle('textColor', '#ffffff')} className="w-8 h-8 rounded-full bg-white border-2 border-gray-300"></button>
                 <button onClick={() => updateStyle('textColor', '#000000')} className="w-8 h-8 rounded-full bg-black border-2 border-gray-300"></button>
@@ -254,7 +263,6 @@ const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFam
             </div>
         )}
       </div>
-      <AdBanner />
     </div>
   );
 };
