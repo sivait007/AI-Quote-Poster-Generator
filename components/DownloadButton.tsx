@@ -18,43 +18,60 @@ const DownloadIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
 const DownloadButton: React.FC<DownloadButtonProps> = ({ elementRef, isAiLoading }) => {
     const handleDownload = () => {
         const element = elementRef.current;
-        if (element) {
-            // Temporarily set position to relative for watermark positioning
-            const originalPosition = element.style.position;
-            element.style.position = 'relative';
-
-            // Add watermark
-            const watermark = document.createElement('div');
-            watermark.innerText = 'Posterly';
-            Object.assign(watermark.style, {
-                position: 'absolute',
-                bottom: '30px',
-                right: '30px',
-                fontSize: '18px',
-                fontFamily: 'Inter, sans-serif',
-                fontWeight: '500',
-                color: 'rgba(255, 255, 255, 0.9)',
-                textShadow: '0 1px 4px rgba(0, 0, 0, 0.7)',
-                pointerEvents: 'none',
-                zIndex: '1000',
-            });
-            element.appendChild(watermark);
-
-            html2canvas(element, { 
-                scale: 3, // for high-resolution
-                useCORS: true,
-                backgroundColor: null, 
-            }).then((canvas: HTMLCanvasElement) => {
-                const link = document.createElement('a');
-                link.download = 'posterly-quote.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            }).finally(() => {
-                // Cleanup: Remove watermark and restore original position
-                element.removeChild(watermark);
-                element.style.position = originalPosition;
-            });
+        if (!element) {
+            console.error("Poster element not found for download.");
+            alert("Could not find the poster to download. Please refresh and try again.");
+            return;
         }
+
+        // Temporarily hide active editor controls to prevent them appearing in the screenshot
+        const activeControls = element.querySelectorAll('.z-10, .z-20, .border-dashed');
+        activeControls.forEach(el => (el as HTMLElement).style.visibility = 'hidden');
+
+        html2canvas(element, { 
+            scale: 3, // for high-resolution
+            useCORS: true,
+            allowTaint: true, // Helps with cross-origin images/fonts
+            backgroundColor: null, 
+        }).then((canvas: HTMLCanvasElement) => {
+            // Restore visibility of controls
+            activeControls.forEach(el => (el as HTMLElement).style.visibility = 'visible');
+
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+                // The canvas is scaled up by 3, so we need to scale our watermark position and font size too.
+                const scale = 3;
+                const watermarkText = 'Posterly';
+                const fontSize = 18 * scale;
+                const padding = 30 * scale;
+
+                ctx.font = `500 ${fontSize}px Inter, sans-serif`;
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                
+                // Text shadow for better visibility
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+                ctx.shadowOffsetX = 1 * scale;
+                ctx.shadowOffsetY = 2 * scale;
+                ctx.shadowBlur = 4 * scale;
+
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'bottom';
+                
+                ctx.fillText(watermarkText, canvas.width - padding, canvas.height - padding);
+            }
+
+            // Trigger download
+            const link = document.createElement('a');
+            link.download = 'posterly-quote.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            
+        }).catch((error: any) => {
+            // Also restore visibility in case of an error
+            activeControls.forEach(el => (el as HTMLElement).style.visibility = 'visible');
+            console.error("Error generating poster with html2canvas:", error);
+            alert("Sorry, something went wrong while creating your poster image. This can sometimes happen with complex backgrounds or fonts. Please try again.");
+        });
     };
 
     return (
