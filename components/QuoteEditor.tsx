@@ -259,9 +259,9 @@ const QuoteEditor = forwardRef<HTMLDivElement, QuoteEditorProps>(({ quote, onQuo
                     {isActive && (
                         <>
                            {/* Rotation Handle */}
-                            <div className="absolute left-1/2 -translate-x-1/2 -top-8 w-6 h-8 flex flex-col items-center z-20" onMouseDown={(e) => handleInteractionStart('rotate', e, 'rotate')}>
-                                <div className="w-px h-4 bg-gray-500" />
-                                <div className="w-4 h-4 rounded-full bg-white border border-gray-500" style={{ cursor: "url('data:image/svg+xml;charset=utf-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M12.67%204.14C12.67%204.14%2012.67%204.14%2012.67%204.14C11.53%202.99%209.88%202.33%208.06%202.33C4.83%202.33%202.17%204.83%202.17%208C2.17%2011.17%204.83%2013.67%208.06%2013.67C9.53%2013.67%2010.86%2013.14%2011.88%2012.27L10.93%2011.32C10.21%2011.9%209.18%2012.27%208.06%2012.27C5.61%2012.27%203.58%2010.37%203.58%208C3.58%205.63%205.61%203.73%208.06%203.73C9.43%203.73%2010.65%204.28%2011.53%205.16L10.28%206.42H13.67V3L12.67%204.14Z%22%20fill%3D%22black%22/%3E%3C/svg%3E')%208%208%2C%20auto" }} />
+                            <div className="absolute left-1/2 -translate-x-1/2 -top-12 w-6 h-7 flex flex-col items-center z-20" onMouseDown={(e) => handleInteractionStart('rotate', e, 'rotate')}>
+                                <div className="w-px h-3 bg-gray-500" />
+                                <div className="w-4 h-4 rounded-full bg-white border border-gray-500" style={{ cursor: "url('data:image/svg+xml;charset=utf-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M12.67%204.14C12.67%204.14%2012.67%204.14%2012.67%204.14C11.53%202.99%209.88%202.33%208.06%202.33C4.83%202.33%202.17%204.83%202.17%208C2.17%2011.17%204.83%2013.67%208.06%2013.67C9.53%2013.67%2010.86%2013.14%2011.88%2012.27L10.93%2011.32C10.21%2011.9%209.18%2012.27%208.06%2012.27C5.61%2012.27%203.58%2010.37%203.58%208C3.58%205.63%205.61%203.73%208.06%203.73C9.43%203.73%2010.65%204.28%2011.53%205.16L10.28%206.42H13.67V3L12.67%204.14Z%22%20fill%3D%22black%22/%3E%3C/svg%3E')%208%208%2C%20auto" }} />
                             </div>
                             {/* Resize Handles */}
                             {resizeHandles.map(handle => (
