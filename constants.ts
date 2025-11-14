@@ -15,7 +15,11 @@ export const FONT_FAMILIES: FontFamily[] = [
   { name: 'Playfair', className: 'font-serif', value: "'Playfair Display', serif", lang: 'en' },
   { name: 'Inter', className: 'font-sans', value: "'Inter', sans-serif", lang: 'all' },
   { name: 'Roboto Mono', className: "font-mono", value: "'Roboto Mono', monospace", lang: 'all' },
-  { name: 'Lobster', className: "font-['Lobster']", value: "'Lobster', cursive", lang: 'en' },
+  { name: 'Lobster', className: "font-lobster", value: "'Lobster', cursive", lang: 'en' },
+  { name: 'Poppins', className: "font-poppins", value: "'Poppins', sans-serif", lang: 'all' },
+  { name: 'Merriweather', className: "font-merriweather", value: "'Merriweather', serif", lang: 'en' },
+  { name: 'Pacifico', className: "font-pacifico", value: "'Pacifico', cursive", lang: 'en' },
+  { name: 'Caveat', className: "font-caveat", value: "'Caveat', cursive", lang: 'en' },
   { name: 'Tamil', className: "font-tamil", value: "'Noto Sans Tamil', sans-serif", lang: 'ta' },
   { name: 'Hindi', className: "font-hindi", value: "'Noto Sans Devanagari', sans-serif", lang: 'hi' },
 ];
@@ -32,6 +36,6 @@ export const FALLBACK_QUOTES: Quote[] = [
     { "quote": "Happiness is not something readymade. It comes from your own actions.", "category": "Happiness", "lang": "en" },
     { "quote": "யாதும் ஊரே யாவரும் கேளிர்", "category": "Motivational", "lang": "ta"},
     { "quote": "விடாமுயற்சி விஸ்வரூப வெற்றி", "category": "Success", "lang": "ta"},
-    { "quote": "सत्यमेव जयते", "category": "Motivational", "lang": "hi"},
+    { "quote": "சत्यमेव जयते", "category": "Motivational", "lang": "hi"},
     { "quote": "असंभव कुछ भी नहीं", "category": "Success", "lang": "hi"}
 ];

@@ -24,6 +24,9 @@ const App: React.FC = () => {
         shadow: 3,
         aspectRatio: 'aspect-square',
         position: { x: 50, y: 50 }, // Center of the poster
+        width: 80,
+        height: 50,
+        rotation: 0,
     });
 
     useEffect(() => {
@@ -61,7 +64,6 @@ const App: React.FC = () => {
                     onQuoteChange={setQuote} 
                     styles={styles} 
                     setStyles={setStyles}
-                    fontFamilies={FONT_FAMILIES}
                 />
             </main>
 

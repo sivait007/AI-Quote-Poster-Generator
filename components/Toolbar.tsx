@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import type { StyleSettings, Gradient, FontFamily } from '../types';
 import SparklesIcon from './icons/SparklesIcon';
+import AdBanner from './AdBanner';
 
 interface ToolbarProps {
   styles: StyleSettings;
@@ -17,9 +18,9 @@ type CustomBgMode = 'solid' | 'gradient';
 
 const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFamilies, onGenerateQuote, onGenerateBackground, isAiLoading }) => {
   const [activeTab, setActiveTab] = useState<Tab>('text');
-  const [selectedLang, setSelectedLang] = useState('en');
   const [aiQuoteTopic, setAiQuoteTopic] = useState('Motivation');
   const [aiBgPrompt, setAiBgPrompt] = useState('Calm blue waves');
+  const [aiLang, setAiLang] = useState('en');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [customBgMode, setCustomBgMode] = useState<CustomBgMode>('solid');
   const [gradientColors, setGradientColors] = useState(['#ff7eb3', '#9b5de5']);
@@ -33,19 +34,6 @@ const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFam
       updateStyle('background', `linear-gradient(to right, ${gradientColors[0]}, ${gradientColors[1]})`);
     }
   }, [gradientColors, customBgMode]);
-
-  const handleLangChange = (lang: string) => {
-    setSelectedLang(lang);
-    const availableFonts = fontFamilies.filter(f => f.lang === lang || f.lang === 'all');
-    const isCurrentFontAvailable = availableFonts.some(f => f.className === styles.fontFamily);
-
-    if (!isCurrentFontAvailable) {
-        const defaultFontForLang = fontFamilies.find(f => f.lang === lang) || availableFonts[0];
-        if (defaultFontForLang) {
-            updateStyle('fontFamily', defaultFontForLang.className);
-        }
-    }
-  };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
@@ -81,22 +69,23 @@ const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFam
     </button>
   );
 
-  const LangButton: React.FC<{lang: string, label: string}> = ({lang, label}) => (
-    <button
-      onClick={() => handleLangChange(lang)}
-      className={`py-2 text-sm rounded-lg border transition-colors ${selectedLang === lang ? 'bg-posterly-indigo text-white border-posterly-indigo' : 'bg-white hover:bg-gray-100 border-gray-300'}`}
-    >
-      {label}
-    </button>
-  );
-
   return (
     <div className="w-full md:w-80 lg:w-96 bg-white/50 backdrop-blur-lg rounded-3xl shadow-xl shadow-black/10 p-4 md:p-6 text-gray-800 flex flex-col">
       <h2 className="text-2xl font-bold font-serif text-posterly-indigo mb-4">Customize</h2>
-      <div className="flex justify-between items-center bg-gray-100 rounded-lg p-1 mb-6">
+      <div className="grid grid-cols-3 gap-1 bg-gray-100 rounded-lg p-1 mb-6">
         <TabButton tab="text" label="Text" />
         <TabButton tab="style" label="Style" />
-        <TabButton tab="ai" label="AI Magic" />
+        <button
+          onClick={() => setActiveTab('ai')}
+          className={`px-2 py-2 text-sm font-medium rounded-lg transition-all duration-300 flex items-center justify-center gap-1.5 ${
+            activeTab === 'ai' 
+              ? 'text-white bg-gradient-to-r from-posterly-pink to-posterly-purple shadow-md scale-105' 
+              : 'text-white bg-gradient-to-r from-posterly-pink/90 to-posterly-purple/90 hover:opacity-95'
+          }`}
+        >
+          <SparklesIcon className="w-4 h-4" />
+          <span>AI Magic</span>
+        </button>
       </div>
 
       <div className="flex-grow overflow-y-auto pr-2 -mr-2">
@@ -182,20 +171,13 @@ const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFam
         {activeTab === 'text' && (
           <div className="space-y-6">
             <div>
-              <h3 className="font-bold mb-2">Language</h3>
-              <div className="grid grid-cols-3 gap-2">
-                <LangButton lang="en" label="English" />
-                <LangButton lang="ta" label="தமிழ்" />
-                <LangButton lang="hi" label="हिन्दी" />
-              </div>
-            </div>
-            <div>
               <h3 className="font-bold mb-2">Font Family</h3>
               <select onChange={e => updateStyle('fontFamily', e.target.value)} value={styles.fontFamily} className="w-full p-2 rounded-lg border border-gray-300 bg-white">
-                {fontFamilies
-                  .filter(f => f.lang === selectedLang || f.lang === 'all')
-                  .map(f => <option key={f.name} value={f.className}>{f.name}</option>)}
+                {fontFamilies.map(f => <option key={f.name} value={f.className}>{f.name}</option>)}
               </select>
+              <p className="text-xs text-gray-500 mt-2 text-center">
+                Tip: You can type in any language directly into the editor.
+              </p>
             </div>
             <div>
                 <h3 className="font-bold mb-2">Size & Weight</h3>
@@ -227,10 +209,15 @@ const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFam
             <div className="space-y-6">
                 <div>
                     <h3 className="font-bold mb-2 flex items-center"><SparklesIcon className="w-5 h-5 mr-2 text-posterly-purple" /> AI Quote Generator</h3>
-                    <p className="text-xs text-gray-500 mb-2">Generate a unique quote on any topic in your selected language (from the 'Text' tab).</p>
+                    <p className="text-xs text-gray-500 mb-2">Generate a unique quote on any topic in your chosen language.</p>
                     <div className="flex space-x-2">
                         <input type="text" value={aiQuoteTopic} onChange={e => setAiQuoteTopic(e.target.value)} placeholder="e.g. Success" className="w-full p-2 rounded-lg border border-gray-300 bg-white" />
-                        <button onClick={() => onGenerateQuote(aiQuoteTopic, selectedLang)} disabled={isAiLoading} className="px-4 py-2 bg-posterly-purple text-white rounded-lg hover:opacity-90 disabled:opacity-50 transition-opacity">
+                        <select value={aiLang} onChange={e => setAiLang(e.target.value)} className="p-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-posterly-purple">
+                            <option value="en">EN</option>
+                            <option value="ta">TA</option>
+                            <option value="hi">HI</option>
+                        </select>
+                        <button onClick={() => onGenerateQuote(aiQuoteTopic, aiLang)} disabled={isAiLoading} className="px-4 py-2 bg-posterly-purple text-white rounded-lg hover:opacity-90 disabled:opacity-50 transition-opacity">
                             {isAiLoading ? '...' : 'Go'}
                         </button>
                     </div>
@@ -249,6 +236,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFam
             </div>
         )}
       </div>
+      <AdBanner />
     </div>
   );
 };

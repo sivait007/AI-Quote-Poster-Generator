@@ -11,6 +11,9 @@ export interface StyleSettings {
   shadow: number;
   aspectRatio: string;
   position: { x: number; y: number };
+  width: number;
+  height: number;
+  rotation: number;
 }
 
 export interface Gradient {
