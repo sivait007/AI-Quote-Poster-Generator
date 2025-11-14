@@ -7,11 +7,14 @@ interface QuoteEditorProps {
   onQuoteChange: (newQuote: string) => void;
   styles: StyleSettings;
   setStyles: React.Dispatch<React.SetStateAction<StyleSettings>>;
+  emojiInsertion: { emoji: string; timestamp: number } | null;
 }
 
-const QuoteEditor = forwardRef<HTMLDivElement, QuoteEditorProps>(({ quote, onQuoteChange, styles, setStyles }, ref) => {
+const QuoteEditor = forwardRef<HTMLDivElement, QuoteEditorProps>(({ quote, onQuoteChange, styles, setStyles, emojiInsertion }, ref) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const draggableRef = useRef<HTMLDivElement>(null);
+  const lastRangeRef = useRef<Range | null>(null);
+  const internalHTMLRef = useRef<string | null>(null);
 
   const [isActive, setIsActive] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -27,13 +30,21 @@ const QuoteEditor = forwardRef<HTMLDivElement, QuoteEditorProps>(({ quote, onQuo
   const [inlineToolbar, setInlineToolbar] = useState({
     isVisible: false,
     position: { top: 0, left: 0 },
+    activeRange: null as Range | null,
   });
 
   useEffect(() => {
-    if (editorRef.current && quote !== editorRef.current.innerHTML && !isEditing) {
-      editorRef.current.innerHTML = quote;
+    if (editorRef.current && quote !== editorRef.current.innerHTML) {
+      if (editorRef.current.innerHTML === internalHTMLRef.current) {
+        return;
+      }
+      const selection = window.getSelection();
+      const isCurrentlyFocused = editorRef.current.contains(selection?.focusNode ?? null);
+      if (!isCurrentlyFocused && !interactionRef.current.isInteracting) {
+        editorRef.current.innerHTML = quote;
+      }
     }
-  }, [quote, isEditing]);
+  }, [quote]);
   
   useEffect(() => {
     if (isEditing && editorRef.current) {
@@ -45,13 +56,22 @@ const QuoteEditor = forwardRef<HTMLDivElement, QuoteEditorProps>(({ quote, onQuo
             range.collapse(false); // to end
             selection.removeAllRanges();
             selection.addRange(range);
+            lastRangeRef.current = range;
         }
     }
   }, [isEditing]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-        if (draggableRef.current && !draggableRef.current.contains(event.target as Node)) {
+        const toolbarEl = document.getElementById('inline-toolbar');
+        if (
+            draggableRef.current && 
+            !draggableRef.current.contains(event.target as Node) &&
+            (!toolbarEl || !toolbarEl.contains(event.target as Node))
+        ) {
+            if (editorRef.current && editorRef.current.innerHTML !== quote) {
+                onQuoteChange(editorRef.current.innerHTML);
+            }
             setIsActive(false);
             setIsEditing(false);
             hideInlineToolbar();
@@ -59,21 +79,90 @@ const QuoteEditor = forwardRef<HTMLDivElement, QuoteEditorProps>(({ quote, onQuo
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [quote, onQuoteChange]);
+
+  useEffect(() => {
+    const editor = editorRef.current;
+    if (editor) {
+      const preventDefault = (e: Event) => e.preventDefault();
+      editor.addEventListener('contextmenu', preventDefault);
+      return () => editor.removeEventListener('contextmenu', preventDefault);
+    }
   }, []);
+  
+  useEffect(() => {
+    if (emojiInsertion && editorRef.current) {
+      const editor = editorRef.current;
+      editor.focus();
+  
+      const selection = window.getSelection();
+      if (!selection) return;
+  
+      let range;
+      // Use the last saved range if it's valid within the editor
+      if (lastRangeRef.current && editor.contains(lastRangeRef.current.commonAncestorContainer)) {
+        range = lastRangeRef.current;
+        selection.removeAllRanges();
+        selection.addRange(range);
+      } else {
+        // Fallback to the end of the content
+        range = document.createRange();
+        range.selectNodeContents(editor);
+        range.collapse(false); // false means to the end
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+  
+      // Manually insert the emoji as a text node
+      const emojiNode = document.createTextNode(emojiInsertion.emoji);
+      range.deleteContents(); // Clear any selected text
+      range.insertNode(emojiNode);
+  
+      // Move the cursor to after the inserted emoji
+      range.setStartAfter(emojiNode);
+      range.collapse(true);
+      selection.removeAllRanges();
+      selection.addRange(range);
+  
+      // Save the new cursor position
+      lastRangeRef.current = range.cloneRange();
+  
+      // Update parent state with new HTML
+      const newHTML = editor.innerHTML;
+      internalHTMLRef.current = newHTML;
+      onQuoteChange(newHTML);
+    }
+  }, [emojiInsertion]);
+
 
   const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
-    onQuoteChange(e.currentTarget.innerHTML);
+    const newHTML = e.currentTarget.innerHTML;
+    internalHTMLRef.current = newHTML;
+    onQuoteChange(newHTML);
     hideInlineToolbar();
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      lastRangeRef.current = selection.getRangeAt(0).cloneRange();
+    }
   };
 
   const handleBlur = () => {
-    setIsEditing(false);
+    const selection = window.getSelection();
+    if(selection && selection.rangeCount > 0) {
+        const currentRange = selection.getRangeAt(0);
+        // Only save the range if it's inside the editor
+        if (editorRef.current && editorRef.current.contains(currentRange.commonAncestorContainer)) {
+            lastRangeRef.current = currentRange.cloneRange();
+        }
+    }
+    // Don't set editing to false immediately, wait for potential emoji click
+    // setIsEditing(false); 
     hideInlineToolbar();
   };
   
   const hideInlineToolbar = () => {
      if (inlineToolbar.isVisible) {
-        setInlineToolbar({ isVisible: false, position: { top: 0, left: 0 } });
+        setInlineToolbar({ isVisible: false, position: { top: 0, left: 0 }, activeRange: null });
      }
   };
   
@@ -84,7 +173,7 @@ const QuoteEditor = forwardRef<HTMLDivElement, QuoteEditorProps>(({ quote, onQuo
   };
 
   const handleInteractionStart = (type: 'move' | 'resize' | 'rotate', e: React.MouseEvent, handle: string | null = null) => {
-    if (isEditing) return; // Don't interact if in edit mode
+    if (isEditing) return;
     e.preventDefault();
     e.stopPropagation();
     
@@ -172,7 +261,6 @@ const QuoteEditor = forwardRef<HTMLDivElement, QuoteEditorProps>(({ quote, onQuo
 
   const handleInteractionEnd = () => {
     if (!interactionRef.current.isInteracting && !isEditing) {
-       // A simple click when not in edit mode should select the box.
        setIsActive(true);
     }
 
@@ -184,32 +272,40 @@ const QuoteEditor = forwardRef<HTMLDivElement, QuoteEditorProps>(({ quote, onQuo
   };
   
   const handleEditorMouseUp = () => {
-    // Use a timeout to allow the selection to update
     setTimeout(() => {
         const selection = window.getSelection();
-        if (selection && !selection.isCollapsed && selection.rangeCount > 0) {
-            const range = selection.getRangeAt(0);
-            const rect = range.getBoundingClientRect();
-            const containerRect = draggableRef.current?.getBoundingClientRect();
-            if (containerRect) {
-                setInlineToolbar({
-                    isVisible: true,
-                    position: {
-                        top: rect.top - containerRect.top,
-                        left: rect.left - containerRect.left + rect.width / 2,
-                    },
-                });
+        if (selection && selection.rangeCount > 0) {
+            const currentRange = selection.getRangeAt(0).cloneRange();
+            lastRangeRef.current = currentRange;
+
+            if (!selection.isCollapsed) {
+                const rect = currentRange.getBoundingClientRect();
+                const containerRect = draggableRef.current?.getBoundingClientRect();
+                if (containerRect) {
+                    setInlineToolbar({
+                        isVisible: true,
+                        position: {
+                            top: rect.top - containerRect.top,
+                            left: rect.left - containerRect.left + rect.width / 2,
+                        },
+                        activeRange: currentRange,
+                    });
+                }
+            } else {
+                hideInlineToolbar();
             }
-        } else {
-            hideInlineToolbar();
         }
-    }, 10);
+    }, 0);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.currentTarget.innerText.length >= 150 && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) {
       const selection = window.getSelection();
       if (selection && selection.isCollapsed) e.preventDefault();
+    }
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      lastRangeRef.current = selection.getRangeAt(0).cloneRange();
     }
   };
 
@@ -229,6 +325,7 @@ const QuoteEditor = forwardRef<HTMLDivElement, QuoteEditorProps>(({ quote, onQuo
     color: styles.textColor,
     textAlign: styles.textAlign,
     lineHeight: '1.4',
+    WebkitTouchCallout: 'none',
   };
 
   const shadowClasses = ['shadow-none', 'shadow-md', 'shadow-lg', 'shadow-xl', 'shadow-2xl'];
@@ -239,11 +336,37 @@ const QuoteEditor = forwardRef<HTMLDivElement, QuoteEditorProps>(({ quote, onQuo
 
   return (
     <div className="flex items-center justify-center w-full h-full">
-        <div ref={ref} style={posterStyle} className={`w-full ${maxWidthClass} ${styles.aspectRatio} transition-all duration-300 ${shadowClasses[styles.shadow]} overflow-hidden`}>
+        <div 
+          ref={ref} 
+          style={posterStyle} 
+          className={`w-full ${maxWidthClass} ${styles.aspectRatio} transition-all duration-300 ${shadowClasses[styles.shadow]} overflow-hidden`}
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) {
+              if (editorRef.current && editorRef.current.innerHTML !== quote) {
+                 onQuoteChange(editorRef.current.innerHTML);
+              }
+              setIsActive(false);
+              setIsEditing(false);
+              hideInlineToolbar();
+            }
+          }}
+        >
             <div ref={draggableRef} style={textContainerStyle} onMouseDown={(e) => handleInteractionStart('move', e)} onDoubleClick={handleDoubleClick}>
                  <div className={`w-full h-full relative ${isEditing ? '' : 'cursor-move'}`}>
                     {isActive && <div className="absolute inset-0 border border-dashed border-gray-400 pointer-events-none html2canvas-ignore" />}
-                    <InlineToolbar isVisible={inlineToolbar.isVisible} position={inlineToolbar.position} className="html2canvas-ignore" />
+                    <InlineToolbar 
+                      isVisible={inlineToolbar.isVisible} 
+                      position={inlineToolbar.position} 
+                      activeRange={inlineToolbar.activeRange}
+                      className="html2canvas-ignore" 
+                      onStyleApplied={() => {
+                        if (editorRef.current) {
+                           const newHTML = editorRef.current.innerHTML;
+                           internalHTMLRef.current = newHTML;
+                           onQuoteChange(newHTML);
+                        }
+                      }}
+                    />
                     <div
                         ref={editorRef}
                         contentEditable={isEditing}

@@ -6,14 +6,25 @@ import type { StyleSettings } from './types';
 import { GRADIENTS, FONT_FAMILIES, FALLBACK_QUOTES } from './constants';
 import { generateQuote, generateBackground } from './services/geminiService';
 
+// Helper function to determine base font size based on screen width
+const getBaseFontSize = () => {
+    const width = window.innerWidth;
+    if (width < 768) return 27; // Mobile
+    if (width < 1024) return 36; // Tablet
+    return 32; // Desktop
+};
+
 const App: React.FC = () => {
     const posterRef = useRef<HTMLDivElement>(null);
     const [isAiLoading, setIsAiLoading] = useState(false);
     const [quote, setQuote] = useState('');
+    const [emojiInsertion, setEmojiInsertion] = useState<{ emoji: string; timestamp: number } | null>(null);
+    const [fontSizeDelta, setFontSizeDelta] = useState(0); // User adjustments
+
 
     const [styles, setStyles] = useState<StyleSettings>({
         background: GRADIENTS[0].css,
-        fontSize: 48,
+        fontSize: getBaseFontSize(),
         fontWeight: 'bold',
         fontStyle: 'normal',
         textAlign: 'center',
@@ -28,6 +39,21 @@ const App: React.FC = () => {
         height: 50,
         rotation: 0,
     });
+
+    // Effect to handle responsive font size on window resize and user adjustments
+    useEffect(() => {
+        const handleResize = () => {
+            setStyles(prev => ({
+                ...prev,
+                fontSize: getBaseFontSize() + fontSizeDelta
+            }));
+        };
+
+        handleResize(); // Set size on mount and when delta changes
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, [fontSizeDelta]);
 
     useEffect(() => {
         // Load initial quote in English
@@ -51,6 +77,14 @@ const App: React.FC = () => {
         setIsAiLoading(false);
     };
 
+    const handleInsertEmoji = (emoji: string) => {
+        setEmojiInsertion({ emoji, timestamp: Date.now() });
+    };
+
+    const handleFontSizeAdjust = (amount: number) => {
+        setFontSizeDelta(prev => prev + amount);
+    };
+
     return (
         <div className="w-full min-h-screen bg-gray-100 font-sans flex flex-col md:flex-row items-start">
             <header className="w-full md:hidden p-4 bg-white/80 backdrop-blur-sm fixed top-0 z-10 flex items-center justify-center shadow-md">
@@ -64,6 +98,7 @@ const App: React.FC = () => {
                     onQuoteChange={setQuote} 
                     styles={styles} 
                     setStyles={setStyles}
+                    emojiInsertion={emojiInsertion}
                 />
             </main>
 
@@ -76,6 +111,8 @@ const App: React.FC = () => {
                     onGenerateQuote={handleGenerateQuote}
                     onGenerateBackground={handleGenerateBackground}
                     isAiLoading={isAiLoading}
+                    onInsertEmoji={handleInsertEmoji}
+                    onFontSizeAdjust={handleFontSizeAdjust}
                 />
             </aside>
             

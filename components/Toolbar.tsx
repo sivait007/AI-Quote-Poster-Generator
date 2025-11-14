@@ -11,12 +11,14 @@ interface ToolbarProps {
   onGenerateQuote: (topic: string, lang: string) => void;
   onGenerateBackground: (prompt: string) => void;
   isAiLoading: boolean;
+  onInsertEmoji: (emoji: string) => void;
+  onFontSizeAdjust: (amount: number) => void;
 }
 
 type Tab = 'style' | 'text' | 'ai';
 type CustomBgMode = 'solid' | 'gradient';
 
-const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFamilies, onGenerateQuote, onGenerateBackground, isAiLoading }) => {
+const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFamilies, onGenerateQuote, onGenerateBackground, isAiLoading, onInsertEmoji, onFontSizeAdjust }) => {
   const [activeTab, setActiveTab] = useState<Tab>('text');
   const [aiQuoteTopic, setAiQuoteTopic] = useState('Motivation');
   const [aiBgPrompt, setAiBgPrompt] = useState('Calm blue waves');
@@ -46,6 +48,8 @@ const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFam
           reader.readAsDataURL(file);
       }
   };
+  
+  const emojis = ['😊', '❤️', '✨', '🎉', '👍', '🙏', '😂', '🔥', '🚀', '💡', '🌟', '🤔'];
 
   const TabButton: React.FC<{tab: Tab, label: string}> = ({tab, label}) => (
      <button
@@ -179,12 +183,26 @@ const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFam
                 Tip: You can type in any language directly into the editor.
               </p>
             </div>
+             <div>
+              <h3 className="font-bold mb-2">Emojis</h3>
+              <div className="grid grid-cols-6 gap-2 bg-gray-100 p-2 rounded-lg">
+                {emojis.map(emoji => (
+                    <button 
+                        key={emoji} 
+                        onClick={() => onInsertEmoji(emoji)}
+                        className="text-2xl p-1 hover:bg-gray-200 rounded-md transition-colors"
+                    >
+                        {emoji}
+                    </button>
+                ))}
+              </div>
+            </div>
             <div>
                 <h3 className="font-bold mb-2">Size & Weight</h3>
                  <div className="flex items-center space-x-2">
-                    <button onClick={() => updateStyle('fontSize', styles.fontSize - 2)} className="p-2 rounded-lg bg-gray-200 hover:bg-gray-300">-</button>
+                    <button onClick={() => onFontSizeAdjust(-2)} className="p-2 rounded-lg bg-gray-200 hover:bg-gray-300">-</button>
                     <span className="text-center w-10">{styles.fontSize}px</span>
-                    <button onClick={() => updateStyle('fontSize', styles.fontSize + 2)} className="p-2 rounded-lg bg-gray-200 hover:bg-gray-300">+</button>
+                    <button onClick={() => onFontSizeAdjust(2)} className="p-2 rounded-lg bg-gray-200 hover:bg-gray-300">+</button>
                     <div className="flex-grow" />
                     <button onClick={() => updateStyle('fontWeight', styles.fontWeight === 'bold' ? 'normal' : 'bold')} className={`p-2 rounded-lg ${styles.fontWeight === 'bold' ? 'bg-posterly-indigo text-white' : 'bg-gray-200'}`}>B</button>
                     <button onClick={() => updateStyle('fontStyle', styles.fontStyle === 'italic' ? 'normal' : 'italic')} className={`p-2 rounded-lg italic ${styles.fontStyle === 'italic' ? 'bg-posterly-indigo text-white' : 'bg-gray-200'}`}>I</button>
