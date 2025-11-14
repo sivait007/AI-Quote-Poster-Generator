@@ -3,9 +3,10 @@ import React from 'react';
 interface InlineToolbarProps {
   isVisible: boolean;
   position: { top: number; left: number };
+  className?: string;
 }
 
-const InlineToolbar: React.FC<InlineToolbarProps> = ({ isVisible, position }) => {
+const InlineToolbar: React.FC<InlineToolbarProps> = ({ isVisible, position, className }) => {
   if (!isVisible) return null;
 
   const handleStyleClick = (command: string, value: string | null = null) => {
@@ -74,7 +75,7 @@ const InlineToolbar: React.FC<InlineToolbarProps> = ({ isVisible, position }) =>
 
   return (
     <div
-      className="absolute z-10 bg-gray-800 text-white rounded-lg shadow-lg flex items-center p-1 transition-opacity duration-200"
+      className={`absolute z-10 bg-gray-800 text-white rounded-lg shadow-lg flex items-center p-1 transition-opacity duration-200 ${className || ''}`}
       style={{
         top: position.top,
         left: position.left,
