@@ -1,3 +1,4 @@
+
 import React, { forwardRef, useRef, useEffect, useState } from 'react';
 import type { StyleSettings } from '../types';
 import InlineToolbar from './InlineToolbar';
@@ -255,21 +256,50 @@ const QuoteEditor = forwardRef<HTMLDivElement, QuoteEditorProps>(({ quote, onQuo
             const currentAngle = Math.atan2(coords.clientY - centerY, coords.clientX - centerX) * (180 / Math.PI);
             setStyles(prev => ({ ...prev, rotation: currentAngle - initialStyles.startAngle! }));
         } else if (type === 'resize') {
-            let { initialWidthPx, initialHeightPx, position } = initialStyles;
+            const { initialWidthPx, initialHeightPx, position, rotation } = initialStyles;
+
+            // Rotate the mouse movement vector to align with the element's rotation
+            const rad = -(rotation! * Math.PI) / 180;
+            const cos = Math.cos(rad);
+            const sin = Math.sin(rad);
+            const dxRotated = dx * cos - dy * sin;
+            const dyRotated = dx * sin + dy * cos;
+
             let newWidthPx = initialWidthPx!;
             let newHeightPx = initialHeightPx!;
-            let newX = position!.x;
-            let newY = position!.y;
+            let deltaX = 0; // Change in center position in local coordinates
+            let deltaY = 0;
 
-            if (handle?.includes('r')) newWidthPx += dx;
-            if (handle?.includes('l')) newWidthPx -= dx;
-            if (handle?.includes('b')) newHeightPx += dy;
-            if (handle?.includes('t')) newHeightPx -= dy;
+            if (handle?.includes('r')) {
+                newWidthPx += dxRotated;
+                deltaX += dxRotated / 2;
+            }
+            if (handle?.includes('l')) {
+                newWidthPx -= dxRotated;
+                deltaX -= dxRotated / 2;
+            }
+            if (handle?.includes('b')) {
+                newHeightPx += dyRotated;
+                deltaY += dyRotated / 2;
+            }
+            if (handle?.includes('t')) {
+                newHeightPx -= dyRotated;
+                deltaY -= dyRotated / 2;
+            }
 
-            if (handle?.includes('l')) newX += (dx / posterRect.width) * 100 / 2;
-            if (handle?.includes('r')) newX += (dx / posterRect.width) * 100 / 2;
-            if (handle?.includes('t')) newY += (dy / posterRect.height) * 100 / 2;
-            if (handle?.includes('b')) newY += (dy / posterRect.height) * 100 / 2;
+            // Now rotate the center point adjustment back to screen coordinates
+            const radInv = rotation! * Math.PI / 180;
+            const cosInv = Math.cos(radInv);
+            const sinInv = Math.sin(radInv);
+            const finalDeltaX = deltaX * cosInv - deltaY * sinInv;
+            const finalDeltaY = deltaX * sinInv + deltaY * cosInv;
+            
+            const newX = position!.x + (finalDeltaX / posterRect.width) * 100;
+            const newY = position!.y + (finalDeltaY / posterRect.height) * 100;
+
+            // Prevent flipping the element inside-out
+            if (newWidthPx < 20) newWidthPx = 20;
+            if (newHeightPx < 20) newHeightPx = 20;
 
             setStyles(prev => ({ 
                 ...prev, 
@@ -423,13 +453,17 @@ const QuoteEditor = forwardRef<HTMLDivElement, QuoteEditorProps>(({ quote, onQuo
                             </div>
                             {/* Resize Handles */}
                             {resizeHandles.map(handle => (
-                                <div 
+                                <div // Larger, invisible touch target for easier grabbing on mobile
                                     key={handle}
-                                    className={`absolute w-3 h-3 bg-white border border-gray-500 rounded-full -translate-x-1/2 -translate-y-1/2 z-20 ${handlePositions[handle]} html2canvas-ignore`}
+                                    className={`absolute w-6 h-6 -translate-x-1/2 -translate-y-1/2 z-20 ${handlePositions[handle]} html2canvas-ignore`}
                                     style={{ cursor: handleCursors[handle] }}
                                     onMouseDown={(e) => handleInteractionStart('resize', e, handle)}
                                     onTouchStart={(e) => handleInteractionStart('resize', e, handle)}
-                                />
+                                >
+                                  <div // The visible handle indicator
+                                    className="absolute top-1/2 left-1/2 w-3 h-3 bg-white border border-gray-500 rounded-full -translate-x-1/2 -translate-y-1/2"
+                                  />
+                                </div>
                             ))}
                         </>
                     )}
