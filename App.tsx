@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import QuoteEditor from './components/QuoteEditor';
 import Toolbar from './components/Toolbar';
 import DownloadButton from './components/DownloadButton';
+import LandingPage from './components/LandingPage';
 import type { StyleSettings } from './types';
 import { GRADIENTS, FONT_FAMILIES, FALLBACK_QUOTES } from './constants';
 import { generateQuote, generateBackground } from './services/geminiService';
@@ -15,6 +16,7 @@ const getBaseFontSize = () => {
 };
 
 const App: React.FC = () => {
+    const [showEditor, setShowEditor] = useState(false);
     const posterRef = useRef<HTMLDivElement>(null);
     const [isAiLoading, setIsAiLoading] = useState(false);
     const [quote, setQuote] = useState('');
@@ -84,6 +86,10 @@ const App: React.FC = () => {
     const handleFontSizeAdjust = (amount: number) => {
         setFontSizeDelta(prev => prev + amount);
     };
+    
+    if (!showEditor) {
+        return <LandingPage onStartCreating={() => setShowEditor(true)} />;
+    }
 
     return (
         <div className="w-full h-screen bg-gray-100 font-sans flex flex-col md:flex-row items-start">

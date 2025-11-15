@@ -20,6 +20,8 @@ export const FONT_FAMILIES: FontFamily[] = [
   { name: 'Merriweather', className: "font-merriweather", value: "'Merriweather', serif", lang: 'en' },
   { name: 'Pacifico', className: "font-pacifico", value: "'Pacifico', cursive", lang: 'en' },
   { name: 'Caveat', className: "font-caveat", value: "'Caveat', cursive", lang: 'en' },
+  { name: 'Dancing Script', className: "font-dancing-script", value: "'Dancing Script', cursive", lang: 'en' },
+  { name: 'Bebas Neue', className: "font-bebas-neue", value: "'Bebas Neue', sans-serif", lang: 'en' },
   { name: 'Tamil', className: "font-tamil", value: "'Noto Sans Tamil', sans-serif", lang: 'ta' },
   { name: 'Hindi', className: "font-hindi", value: "'Noto Sans Devanagari', sans-serif", lang: 'hi' },
 ];
