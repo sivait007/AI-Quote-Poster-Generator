@@ -83,7 +83,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFam
   );
 
   return (
-    <div className="w-full md:w-80 lg:w-96 bg-white/50 backdrop-blur-lg rounded-3xl shadow-xl shadow-black/10 p-4 md:p-6 text-gray-800 flex flex-col">
+    <div className="w-full md:w-80 lg:w-96 bg-white/50 backdrop-blur-lg rounded-t-3xl md:rounded-3xl shadow-xl shadow-black/10 p-4 md:p-6 text-gray-800 flex flex-col max-h-[45vh] md:max-h-full">
       <h2 className="text-2xl font-bold font-serif text-posterly-indigo mb-4">Customize</h2>
       <div className="grid grid-cols-3 gap-1 bg-gray-100 rounded-lg p-1 mb-6">
         <TabButton tab="text" label="Text" />

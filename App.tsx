@@ -86,7 +86,7 @@ const App: React.FC = () => {
     };
 
     return (
-        <div className="w-full min-h-screen bg-gray-100 font-sans flex flex-col md:flex-row items-start">
+        <div className="w-full h-screen bg-gray-100 font-sans flex flex-col md:flex-row items-start">
             <header className="w-full md:hidden p-4 bg-white/80 backdrop-blur-sm fixed top-0 z-10 flex items-center justify-center shadow-md">
                  <h1 className="text-2xl font-bold font-serif text-posterly-indigo">Posterly</h1>
             </header>
@@ -102,7 +102,7 @@ const App: React.FC = () => {
                 />
             </main>
 
-            <aside className="w-full md:w-auto p-4 md:p-8">
+            <aside className="w-full md:w-auto p-4 md:p-8 flex-shrink-0">
                  <Toolbar 
                     styles={styles} 
                     setStyles={setStyles}
