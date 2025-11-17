@@ -1,4 +1,4 @@
-const CACHE_NAME = 'posterly-v2'; // Bump version to invalidate old cache
+const CACHE_NAME = 'thinkslate-v2'; // Bump version to invalidate old cache
 
 // Assets to pre-cache on installation for a reliable offline experience
 const PRECACHE_ASSETS = [

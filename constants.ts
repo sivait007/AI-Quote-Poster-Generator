@@ -6,9 +6,9 @@ export const GRADIENTS: Gradient[] = [
   { name: 'Peach', css: 'linear-gradient(to right, #ffddd2, #ff8a8a)' },
   { name: 'Aurora', css: 'linear-gradient(to right, #7f7fd5, #86a8e7, #91eae4)' },
   { name: 'Midnight', css: 'linear-gradient(to right, #2c3e50, #4ca1af)' },
-  { name: 'Posterly 1', css: 'linear-gradient(to right, #ff7eb3, #9b5de5)'},
-  { name: 'Posterly 2', css: 'linear-gradient(to right, #9b5de5, #3b1dd1)'},
-  { name: 'Posterly 3', css: 'linear-gradient(to right, #4cc9f0, #3b1dd1)'},
+  { name: 'ThinkSlate 1', css: 'linear-gradient(to right, #ff7eb3, #9b5de5)'},
+  { name: 'ThinkSlate 2', css: 'linear-gradient(to right, #9b5de5, #3b1dd1)'},
+  { name: 'ThinkSlate 3', css: 'linear-gradient(to right, #4cc9f0, #3b1dd1)'},
 ];
 
 export const FONT_FAMILIES: FontFamily[] = [

@@ -94,7 +94,7 @@ const App: React.FC = () => {
     return (
         <div className="w-full h-screen bg-gray-100 font-sans flex flex-col md:flex-row items-start">
             <header className="w-full md:hidden p-4 bg-white/80 backdrop-blur-sm fixed top-0 z-10 flex items-center justify-center shadow-md">
-                 <h1 className="text-2xl font-bold font-serif text-posterly-indigo">Posterly</h1>
+                 <h1 className="text-2xl font-bold font-serif text-thinkslate-indigo">ThinkSlate</h1>
             </header>
             
             <main className="w-full h-full flex-grow flex items-center justify-center p-4 pt-20 md:p-8 md:pt-8">

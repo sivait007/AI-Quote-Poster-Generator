@@ -33,7 +33,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ elementRef, isAiLoading
 
         try {
             watermark.id = 'temp-watermark';
-            watermark.innerText = 'Posterly';
+            watermark.innerText = 'ThinkSlate';
             Object.assign(watermark.style, {
                 position: 'absolute',
                 bottom: '30px',
@@ -62,7 +62,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ elementRef, isAiLoading
             });
 
             const link = document.createElement('a');
-            link.download = 'posterly-quote.png';
+            link.download = 'thinkslate-quote.png';
             link.href = canvas.toDataURL('image/png');
             link.click();
 
@@ -83,7 +83,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ elementRef, isAiLoading
         <button
             onClick={handleDownload}
             disabled={isAiLoading}
-            className="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-50 w-16 h-16 bg-posterly-indigo text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+            className="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-50 w-16 h-16 bg-thinkslate-indigo text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
             aria-label="Download Poster"
         >
             <DownloadIcon className="w-8 h-8"/>

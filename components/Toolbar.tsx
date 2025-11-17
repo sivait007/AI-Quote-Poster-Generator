@@ -64,7 +64,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFam
      <button
         onClick={() => setActiveTab(tab)}
         className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors w-full ${
-          activeTab === tab ? 'bg-posterly-purple text-white' : 'text-gray-600 hover:bg-gray-200'
+          activeTab === tab ? 'bg-thinkslate-purple text-white' : 'text-gray-600 hover:bg-gray-200'
         }`}
       >
         {label}
@@ -75,7 +75,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFam
     <button
         onClick={() => setCustomBgMode(mode)}
         className={`px-3 py-1 text-sm rounded-md transition-colors w-full ${
-            customBgMode === mode ? 'bg-posterly-indigo text-white' : 'text-gray-500 hover:bg-gray-300'
+            customBgMode === mode ? 'bg-thinkslate-indigo text-white' : 'text-gray-500 hover:bg-gray-300'
         }`}
     >
         {label}
@@ -84,7 +84,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFam
 
   return (
     <div className="w-full md:w-80 lg:w-96 bg-white/50 backdrop-blur-lg rounded-t-3xl md:rounded-3xl shadow-xl shadow-black/10 p-4 md:p-6 text-gray-800 flex flex-col max-h-[45vh] md:max-h-full">
-      <h2 className="text-2xl font-bold font-serif text-posterly-indigo mb-4">Customize</h2>
+      <h2 className="text-2xl font-bold font-serif text-thinkslate-indigo mb-4">Customize</h2>
       <div className="grid grid-cols-3 gap-1 bg-gray-100 rounded-lg p-1 mb-6">
         <TabButton tab="text" label="Text" />
         <TabButton tab="style" label="Style" />
@@ -92,8 +92,8 @@ const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFam
           onClick={() => setActiveTab('ai')}
           className={`px-2 py-2 text-sm font-medium rounded-lg transition-all duration-300 flex items-center justify-center gap-1.5 ${
             activeTab === 'ai' 
-              ? 'text-white bg-gradient-to-r from-posterly-pink to-posterly-purple shadow-md scale-105' 
-              : 'text-white bg-gradient-to-r from-posterly-pink/90 to-posterly-purple/90 hover:opacity-95'
+              ? 'text-white bg-gradient-to-r from-thinkslate-pink to-thinkslate-purple shadow-md scale-105' 
+              : 'text-white bg-gradient-to-r from-thinkslate-pink/90 to-thinkslate-purple/90 hover:opacity-95'
           }`}
         >
           <SparklesIcon className="w-4 h-4" />
@@ -143,19 +143,19 @@ const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFam
                 <div className="grid grid-cols-3 gap-2">
                     <button
                         onClick={() => updateStyle('aspectRatio', 'aspect-square')}
-                        className={`py-2 text-sm rounded-lg border transition-colors ${styles.aspectRatio === 'aspect-square' ? 'bg-posterly-indigo text-white border-posterly-indigo' : 'bg-white hover:bg-gray-100 border-gray-300'}`}
+                        className={`py-2 text-sm rounded-lg border transition-colors ${styles.aspectRatio === 'aspect-square' ? 'bg-thinkslate-indigo text-white border-thinkslate-indigo' : 'bg-white hover:bg-gray-100 border-gray-300'}`}
                     >
                         Square
                     </button>
                     <button
                         onClick={() => updateStyle('aspectRatio', 'aspect-[4/5]')}
-                        className={`py-2 text-sm rounded-lg border transition-colors ${styles.aspectRatio === 'aspect-[4/5]' ? 'bg-posterly-indigo text-white border-posterly-indigo' : 'bg-white hover:bg-gray-100 border-gray-300'}`}
+                        className={`py-2 text-sm rounded-lg border transition-colors ${styles.aspectRatio === 'aspect-[4/5]' ? 'bg-thinkslate-indigo text-white border-thinkslate-indigo' : 'bg-white hover:bg-gray-100 border-gray-300'}`}
                     >
                         Portrait
                     </button>
                     <button
                         onClick={() => updateStyle('aspectRatio', 'aspect-[9/16]')}
-                        className={`py-2 text-sm rounded-lg border transition-colors ${styles.aspectRatio === 'aspect-[9/16]' ? 'bg-posterly-indigo text-white border-posterly-indigo' : 'bg-white hover:bg-gray-100 border-gray-300'}`}
+                        className={`py-2 text-sm rounded-lg border transition-colors ${styles.aspectRatio === 'aspect-[9/16]' ? 'bg-thinkslate-indigo text-white border-thinkslate-indigo' : 'bg-white hover:bg-gray-100 border-gray-300'}`}
                     >
                         Story
                     </button>
@@ -213,16 +213,16 @@ const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFam
                     <span className="text-center w-10">{styles.fontSize}px</span>
                     <button onClick={() => onFontSizeAdjust(2)} className="p-2 rounded-lg bg-gray-200 hover:bg-gray-300">+</button>
                     <div className="flex-grow" />
-                    <button onClick={() => updateStyle('fontWeight', styles.fontWeight === 'bold' ? 'normal' : 'bold')} className={`p-2 rounded-lg ${styles.fontWeight === 'bold' ? 'bg-posterly-indigo text-white' : 'bg-gray-200'}`}>B</button>
-                    <button onClick={() => updateStyle('fontStyle', styles.fontStyle === 'italic' ? 'normal' : 'italic')} className={`p-2 rounded-lg italic ${styles.fontStyle === 'italic' ? 'bg-posterly-indigo text-white' : 'bg-gray-200'}`}>I</button>
+                    <button onClick={() => updateStyle('fontWeight', styles.fontWeight === 'bold' ? 'normal' : 'bold')} className={`p-2 rounded-lg ${styles.fontWeight === 'bold' ? 'bg-thinkslate-indigo text-white' : 'bg-gray-200'}`}>B</button>
+                    <button onClick={() => updateStyle('fontStyle', styles.fontStyle === 'italic' ? 'normal' : 'italic')} className={`p-2 rounded-lg italic ${styles.fontStyle === 'italic' ? 'bg-thinkslate-indigo text-white' : 'bg-gray-200'}`}>I</button>
                  </div>
             </div>
             <div>
               <h3 className="font-bold mb-2">Alignment & Color</h3>
               <div className="flex items-center space-x-2">
-                <button title="Align Left" onClick={() => updateStyle('textAlign', 'left')} className={`p-2 rounded-lg ${styles.textAlign === 'left' ? 'bg-posterly-indigo text-white' : 'bg-gray-200 hover:bg-gray-300'}`}><AlignLeftIcon className="w-5 h-5" /></button>
-                <button title="Align Center" onClick={() => updateStyle('textAlign', 'center')} className={`p-2 rounded-lg ${styles.textAlign === 'center' ? 'bg-posterly-indigo text-white' : 'bg-gray-200 hover:bg-gray-300'}`}><AlignCenterIcon className="w-5 h-5" /></button>
-                <button title="Align Right" onClick={() => updateStyle('textAlign', 'right')} className={`p-2 rounded-lg ${styles.textAlign === 'right' ? 'bg-posterly-indigo text-white' : 'bg-gray-200 hover:bg-gray-300'}`}><AlignRightIcon className="w-5 h-5" /></button>
+                <button title="Align Left" onClick={() => updateStyle('textAlign', 'left')} className={`p-2 rounded-lg ${styles.textAlign === 'left' ? 'bg-thinkslate-indigo text-white' : 'bg-gray-200 hover:bg-gray-300'}`}><AlignLeftIcon className="w-5 h-5" /></button>
+                <button title="Align Center" onClick={() => updateStyle('textAlign', 'center')} className={`p-2 rounded-lg ${styles.textAlign === 'center' ? 'bg-thinkslate-indigo text-white' : 'bg-gray-200 hover:bg-gray-300'}`}><AlignCenterIcon className="w-5 h-5" /></button>
+                <button title="Align Right" onClick={() => updateStyle('textAlign', 'right')} className={`p-2 rounded-lg ${styles.textAlign === 'right' ? 'bg-thinkslate-indigo text-white' : 'bg-gray-200 hover:bg-gray-300'}`}><AlignRightIcon className="w-5 h-5" /></button>
                 <div className="flex-grow" />
                 <button onClick={() => updateStyle('textColor', '#ffffff')} className="w-8 h-8 rounded-full bg-white border-2 border-gray-300"></button>
                 <button onClick={() => updateStyle('textColor', '#000000')} className="w-8 h-8 rounded-full bg-black border-2 border-gray-300"></button>
@@ -235,26 +235,26 @@ const Toolbar: React.FC<ToolbarProps> = ({ styles, setStyles, gradients, fontFam
         {activeTab === 'ai' && (
             <div className="space-y-6">
                 <div>
-                    <h3 className="font-bold mb-2 flex items-center"><SparklesIcon className="w-5 h-5 mr-2 text-posterly-purple" /> AI Quote Generator</h3>
+                    <h3 className="font-bold mb-2 flex items-center"><SparklesIcon className="w-5 h-5 mr-2 text-thinkslate-purple" /> AI Quote Generator</h3>
                     <p className="text-xs text-gray-500 mb-2">Generate a unique quote on any topic in your chosen language.</p>
                     <div className="flex space-x-2">
                         <input type="text" value={aiQuoteTopic} onChange={e => setAiQuoteTopic(e.target.value)} placeholder="e.g. Success" className="w-full p-2 rounded-lg border border-gray-300 bg-white" />
-                        <select value={aiLang} onChange={e => setAiLang(e.target.value)} className="p-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-posterly-purple">
+                        <select value={aiLang} onChange={e => setAiLang(e.target.value)} className="p-2 rounded-lg border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-thinkslate-purple">
                             <option value="en">EN</option>
                             <option value="ta">TA</option>
                             <option value="hi">HI</option>
                         </select>
-                        <button onClick={() => onGenerateQuote(aiQuoteTopic, aiLang)} disabled={isAiLoading} className="px-4 py-2 bg-posterly-purple text-white rounded-lg hover:opacity-90 disabled:opacity-50 transition-opacity">
+                        <button onClick={() => onGenerateQuote(aiQuoteTopic, aiLang)} disabled={isAiLoading} className="px-4 py-2 bg-thinkslate-purple text-white rounded-lg hover:opacity-90 disabled:opacity-50 transition-opacity">
                             {isAiLoading ? '...' : 'Go'}
                         </button>
                     </div>
                 </div>
                 <div>
-                    <h3 className="font-bold mb-2 flex items-center"><SparklesIcon className="w-5 h-5 mr-2 text-posterly-purple" /> AI Background Generator</h3>
+                    <h3 className="font-bold mb-2 flex items-center"><SparklesIcon className="w-5 h-5 mr-2 text-thinkslate-purple" /> AI Background Generator</h3>
                     <p className="text-xs text-gray-500 mb-2">Describe a theme for an abstract background.</p>
                     <div className="flex space-x-2">
                         <input type="text" value={aiBgPrompt} onChange={e => setAiBgPrompt(e.target.value)} placeholder="e.g. Cosmic nebula" className="w-full p-2 rounded-lg border border-gray-300 bg-white" />
-                        <button onClick={() => onGenerateBackground(aiBgPrompt)} disabled={isAiLoading} className="px-4 py-2 bg-posterly-purple text-white rounded-lg hover:opacity-90 disabled:opacity-50 transition-opacity">
+                        <button onClick={() => onGenerateBackground(aiBgPrompt)} disabled={isAiLoading} className="px-4 py-2 bg-thinkslate-purple text-white rounded-lg hover:opacity-90 disabled:opacity-50 transition-opacity">
                             {isAiLoading ? '...' : 'Create'}
                         </button>
                     </div>

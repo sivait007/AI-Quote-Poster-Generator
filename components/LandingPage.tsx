@@ -25,10 +25,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartCreating }) => {
   return (
     <div className="bg-gray-50 text-gray-800 font-sans">
       <header className="py-4 px-6 md:px-12 flex justify-between items-center">
-        <h1 className="text-3xl font-bold font-serif text-posterly-indigo">Posterly</h1>
+        <h1 className="text-3xl font-bold font-serif text-thinkslate-indigo">ThinkSlate</h1>
         <button
           onClick={onStartCreating}
-          className="hidden md:inline-block bg-posterly-indigo text-white font-semibold px-6 py-2 rounded-lg hover:opacity-90 transition-opacity"
+          className="hidden md:inline-block bg-thinkslate-indigo text-white font-semibold px-6 py-2 rounded-lg hover:opacity-90 transition-opacity"
         >
           Create Now
         </button>
@@ -38,14 +38,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartCreating }) => {
         {/* Hero Section */}
         <section className="text-center py-20 px-4 bg-white">
           <h2 className="text-4xl md:text-6xl font-extrabold font-serif mb-4">
-            Create Stunning Quote Posters with <span className="text-posterly-purple">AI</span>
+            Create Stunning Quote Posters with <span className="text-thinkslate-purple">AI</span>
           </h2>
           <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8">
             Transform your words into beautiful, shareable art. Generate quotes, design with ease, and let our AI create unique backgrounds for you.
           </p>
           <button
             onClick={onStartCreating}
-            className="bg-posterly-indigo text-white font-bold text-xl px-10 py-4 rounded-xl hover:scale-105 transition-transform shadow-lg"
+            className="bg-thinkslate-indigo text-white font-bold text-xl px-10 py-4 rounded-xl hover:scale-105 transition-transform shadow-lg"
           >
             Start Creating Now
           </button>
@@ -95,8 +95,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartCreating }) => {
             <p className="text-gray-600 mb-12">Everything you need to create the perfect design.</p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
               <div className="flex flex-col items-center">
-                <div className="bg-posterly-pink/20 p-4 rounded-full mb-4">
-                   <TextIcon className="w-8 h-8 text-posterly-pink" />
+                <div className="bg-thinkslate-pink/20 p-4 rounded-full mb-4">
+                   <TextIcon className="w-8 h-8 text-thinkslate-pink" />
                 </div>
                 <h4 className="text-xl font-bold mb-2">AI Quote Generation</h4>
                 <p className="text-gray-600">
@@ -104,8 +104,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartCreating }) => {
                 </p>
               </div>
               <div className="flex flex-col items-center">
-                 <div className="bg-posterly-purple/20 p-4 rounded-full mb-4">
-                    <SparklesIcon className="w-8 h-8 text-posterly-purple" />
+                 <div className="bg-thinkslate-purple/20 p-4 rounded-full mb-4">
+                    <SparklesIcon className="w-8 h-8 text-thinkslate-purple" />
                  </div>
                 <h4 className="text-xl font-bold mb-2">AI Backgrounds</h4>
                 <p className="text-gray-600">
@@ -113,8 +113,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartCreating }) => {
                 </p>
               </div>
               <div className="flex flex-col items-center">
-                <div className="bg-posterly-blue/20 p-4 rounded-full mb-4">
-                    <PaletteIcon className="w-8 h-8 text-posterly-blue" />
+                <div className="bg-thinkslate-blue/20 p-4 rounded-full mb-4">
+                    <PaletteIcon className="w-8 h-8 text-thinkslate-blue" />
                 </div>
                 <h4 className="text-xl font-bold mb-2">Powerful Customization</h4>
                 <p className="text-gray-600">
@@ -127,7 +127,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartCreating }) => {
       </main>
 
       <footer className="text-center py-8 text-gray-500">
-        <p>&copy; {new Date().getFullYear()} Posterly. All Rights Reserved.</p>
+        <p>&copy; {new Date().getFullYear()} ThinkSlate. All Rights Reserved.</p>
       </footer>
     </div>
   );
